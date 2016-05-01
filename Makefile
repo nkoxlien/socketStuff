@@ -1,12 +1,13 @@
-FILENAME=leds_signal
+FILENAME=driver
 CC=arm-linux-gnueabihf-gcc
-IDIR =../include
+IDIR =include
 CFLAGS=-I$(IDIR)
+CFLAGS += -g
 LIBS=
-ODIR=../obj
+ODIR=obj
 
-DRV_FILES  := $(wildcard ../drivers/*.c)
-DOBJ_FILES := $(patsubst ../drivers/%.c,../obj/%.o,$(DRV_FILES))
+DRV_FILES  := $(wildcard drivers/*.c)
+DOBJ_FILES := $(patsubst drivers/%.c, obj/%.o,$(DRV_FILES))
 
 _DEPS = 
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
@@ -20,7 +21,7 @@ $(FILENAME): $(DOBJ_FILES) $(OBJ)
 $(ODIR)/%.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-$(ODIR)/%.o: ../drivers/%.c
+$(ODIR)/%.o: drivers/%.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 
