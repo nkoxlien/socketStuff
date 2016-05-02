@@ -68,13 +68,13 @@
                nread = recvfrom(sfd, &buffInt, sizeof(uint32_t), 0,
                        (struct sockaddr *) &peer_addr, &peer_addr_len);
 
-	       
+	        
                if (nread == -1){
                  	printf("Failed read\n");  
 	       		continue;               /* Ignore failed request */
 		}
 		
-		//buffInt = (int)buf;
+		buffInt = ntohl(buffInt);
 		if(( buffInt >> 16) == 0x0000 )	
 			printf("x position: %hi\n ", (short)(buffInt & 0x0000ffff));
 	     	else if(( buffInt >> 16) == 0x0001 )	
