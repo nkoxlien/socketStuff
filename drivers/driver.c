@@ -7,7 +7,7 @@
        #include <sys/socket.h>
        #include <netdb.h>
        #include "ArmTranslator.h"
-       #define BUF_SIZE 32
+       #define BUF_SIZE 4
 
        int
        main(int argc, char *argv[])
@@ -65,7 +65,7 @@
            for (;;) {
 		printf("Reading loop\n");
                peer_addr_len = sizeof(struct sockaddr_storage);
-               nread = recvfrom(sfd, buf, 4, 0,
+               nread = recvfrom(sfd, &buffInt, sizeof(uint32_t), 0,
                        (struct sockaddr *) &peer_addr, &peer_addr_len);
 
 	       
@@ -74,7 +74,7 @@
 	       		continue;               /* Ignore failed request */
 		}
 		
-		buffInt = (int)buf;
+		//buffInt = (int)buf;
 		if(( buffInt >> 16) == 0x0000 )	
 			printf("x position: %hi\n ", (short)(buffInt & 0x0000ffff));
 	     	else if(( buffInt >> 16) == 0x0001 )	
