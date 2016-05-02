@@ -77,12 +77,12 @@
 		buffInt = ntohl(buffInt);
 		if(( buffInt >> 16) == 0x0000 )	
 			printf("x position: %hi\n ", (short)(buffInt & 0x0000ffff));
-	     	else if(( buffInt >> 16) == 0x0001 )	
+	     	/*else if(( buffInt >> 16) == 0x0001 )	
 			printf("y position: %hi\n ", (short)(buffInt & 0x0000ffff));
 		
 		else if(( buffInt >> 16) == 0x0002 )	
 			printf("z position: %hi\n ", (short)(buffInt & 0x0000ffff));
 		else
-			printf("Received garbage...\n");
+			printf("Received garbage...\n");*/
            }
        }
