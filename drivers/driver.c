@@ -75,12 +75,12 @@
 		
 		if( buf[2]   == 0x00 )	
 			printf("x position: %hi\n ", (short)(buf[0] | (buf[1] << 8)));
-	     	/*else if(( buffInt >> 16) == 0x0001 )	
-			printf("y position: %hi\n ", (short)(buffInt & 0x0000ffff));
+	     	else if( buf[2]  == 0x0001 )	
+			printf("y position: %hi\n ", (short)(buf[0] | buf[1] << 8));
 		
-		else if(( buffInt >> 16) == 0x0002 )	
-			printf("z position: %hi\n ", (short)(buffInt & 0x0000ffff));
+		else if( buf[2]  == 0x0002 )	
+			printf("z position: %hi\n ", (short)(buf[0] | buf[1] << 8));
 		else
-			printf("Received garbage...\n");*/
+			printf("Received garbage...\n");
            }
        }
