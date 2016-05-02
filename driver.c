@@ -30,7 +30,7 @@
            hints.ai_addr = NULL;
            hints.ai_next = NULL;
 
-           s = getaddrinfo(NULL, "500", &hints, &result);
+           s = getaddrinfo(NULL, "22", &hints, &result);
            if (s != 0) {
                fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
                exit(EXIT_FAILURE);
