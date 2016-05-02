@@ -7,7 +7,7 @@
        #include <sys/socket.h>
        #include <netdb.h>
        #include "ArmTranslator.h"
-       #define BUF_SIZE 500
+       #define BUF_SIZE 32
 
        int
        main(int argc, char *argv[])
@@ -19,7 +19,7 @@
            socklen_t peer_addr_len;
            ssize_t nread;
            char buf[BUF_SIZE];
-
+	   uint32_t buffInt;
 
            memset(&hints, 0, sizeof(struct addrinfo));
            hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
@@ -30,7 +30,7 @@
            hints.ai_addr = NULL;
            hints.ai_next = NULL;
 
-           s = getaddrinfo(NULL, "500", &hints, &result);
+           s = getaddrinfo(NULL, "22", &hints, &result);
            if (s != 0) {
                fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
                exit(EXIT_FAILURE);
@@ -65,21 +65,24 @@
            for (;;) {
 		printf("Reading loop\n");
                peer_addr_len = sizeof(struct sockaddr_storage);
-               nread = recvfrom(sfd, buf, BUF_SIZE, 0,
+               nread = recvfrom(sfd, buf, 4, 0,
                        (struct sockaddr *) &peer_addr, &peer_addr_len);
+
+	       
                if (nread == -1){
                  	printf("Failed read\n");  
 	       		continue;               /* Ignore failed request */
 		}
-
-               /*s = getnameinfo((struct sockaddr *) &peer_addr,
-                               peer_addr_len, host, NI_MAXHOST,
-                               service, NI_MAXSERV, NI_NUMERICSERV);*/
-		printf("%s\n", buf);
-	      
-
-		/*if (sendto(sfd, buf, nread, 0,
-                           (struct sockaddr *) &peer_addr,
-                           peer_addr_len) != nread);*/
+		
+		buffInt = (int)buf;
+		if(( buffInt >> 16) == 0x0000 )	
+			printf("x position: %hi\n ", (short)(buffInt & 0x0000ffff));
+	     	else if(( buffInt >> 16) == 0x0001 )	
+			printf("y position: %hi\n ", (short)(buffInt & 0x0000ffff));
+		
+		else if(( buffInt >> 16) == 0x0002 )	
+			printf("z position: %hi\n ", (short)(buffInt & 0x0000ffff));
+		else
+			printf("Received garbage...\n");
            }
        }
