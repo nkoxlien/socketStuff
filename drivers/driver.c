@@ -73,8 +73,8 @@
 	       		continue;               /* Ignore failed request */
 		}
 		
-		if( buf[1]   == 0x00 )	
-			printf("x position: %hi\n ", (short)(buf[3] | (buf[2] << 8)));
+		if( buf[2]   == 0x00 )	
+			printf("x position: %hi\n ", (short)(buf[0] | (buf[1] << 8)));
 	     	/*else if(( buffInt >> 16) == 0x0001 )	
 			printf("y position: %hi\n ", (short)(buffInt & 0x0000ffff));
 		
