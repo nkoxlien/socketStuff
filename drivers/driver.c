@@ -19,7 +19,7 @@
            socklen_t peer_addr_len;
            ssize_t nread;
            char buf[BUF_SIZE];
-	   uint32_t buffInt;
+	   int buffInt;
 
            memset(&hints, 0, sizeof(struct addrinfo));
            hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
@@ -65,7 +65,7 @@
            for (;;) {
 		printf("Reading loop\n");
                peer_addr_len = sizeof(struct sockaddr_storage);
-               nread = recvfrom(sfd, &buffInt, sizeof(uint32_t), 0,
+               nread = recvfrom(sfd, &buffInt, sizeof(int), 0,
                        (struct sockaddr *) &peer_addr, &peer_addr_len);
 
 	        
