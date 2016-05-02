@@ -19,7 +19,6 @@
            socklen_t peer_addr_len;
            ssize_t nread;
            char buf[BUF_SIZE];
-	   int buffInt;
 
            memset(&hints, 0, sizeof(struct addrinfo));
            hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
@@ -65,7 +64,7 @@
            for (;;) {
 		printf("Reading loop\n");
                peer_addr_len = sizeof(struct sockaddr_storage);
-               nread = recvfrom(sfd, &buffInt, sizeof(int), 0,
+               nread = recvfrom(sfd, buf, BUF_SIZE, 0,
                        (struct sockaddr *) &peer_addr, &peer_addr_len);
 
 	        
@@ -74,9 +73,8 @@
 	       		continue;               /* Ignore failed request */
 		}
 		
-		buffInt = ntohl(buffInt);
-		if(( buffInt >> 16) == 0x0000 )	
-			printf("x position: %hi\n ", (short)(buffInt & 0x0000ffff));
+		if( buf[1]   == 0x00 )	
+			printf("x position: %hi\n ", (short)(buf[3] | (buf[2] << 8)));
 	     	/*else if(( buffInt >> 16) == 0x0001 )	
 			printf("y position: %hi\n ", (short)(buffInt & 0x0000ffff));
 		
