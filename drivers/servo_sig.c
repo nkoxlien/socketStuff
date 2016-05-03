@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 		//read(fd, buffer, 64);
 		//printf("%s\n",buffer);
 		//sleep(2);
-		
+		printf("Motor 4 value = %i\n", MOTOR4);	
 		if(MOTOR4 >= 600 && MOTOR4 <= 2400){
 			printf("Writing to servo 4\n");	
 			write_servo4(MOTOR4);

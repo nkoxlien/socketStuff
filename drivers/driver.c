@@ -20,11 +20,11 @@ int readHandInfo(){
 			SetMotor4Value(xLevel);
 	}
 
-	else if( xyzBuf[2]  == 0x0001 ){
+	else if( xyzBuf[2]  == 0x01 ){
 		yLevel = GetYLevel((short)(xyzBuf[0] | (xyzBuf[1] << 8)));
 	}
 
-	else if( xyzBuf[2]  == 0x0002 ){	
+	else if( xyzBuf[2]  == 0x02 ){	
 		zLevel = GetZLevel((short)(xyzBuf[0] | (xyzBuf[1] << 8)));
 		if(zLevel != 0)
 			SetMotor3Value(zLevel);
