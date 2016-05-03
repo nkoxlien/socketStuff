@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 
-#define RESOLUTION 	3
+#define RESOLUTION 	50
 #define MAXX            750
 #define MINX            -750
 #define MAXY            450
