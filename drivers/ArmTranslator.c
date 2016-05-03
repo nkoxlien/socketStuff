@@ -1,5 +1,3 @@
-
-
 #include <inttypes.h>
 #include "ArmTranslator.h"
 
