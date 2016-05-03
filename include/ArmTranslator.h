@@ -11,13 +11,6 @@
 
 #include <stdio.h>
 
-#define RESOLUTION 	50
-#define MAXX            750
-#define MINX            -750
-#define MAXY            450
-#define MINY            -450
-#define MAXZ            1400
-#define MINZ            600
 
 
 int MOTOR4;
