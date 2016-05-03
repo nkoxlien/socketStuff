@@ -29,6 +29,13 @@
 
 #define SIG_TEST 44 /* we define our own signal, hard coded since SIGRTMIN is different in user and in kernel space */ 
 
+#define NO_OP_MASK		0x00
+#define ROTATE_MASK		0x40
+#define WRIST_MASK		0x80
+#define CLAW_MASK		0xC0
+#define CLEAR_COMMAND_MASK	0x3F
+#define COMMAND_MASK		0xC0
+
 bool busy = true;
 
 
@@ -118,20 +125,35 @@ int main(int argc, char **argv)
 		if (retval == -1)
 			perror("select()");
 		else if (retval){
-			printf("\nData is available now.\n");
+			//printf("\nData is available now.\n");
 			//if (fseek(fp, -1 , SEEK_END) != 0) {
 			//	int errval = errno;
 			//	printf("ERROR: %d\n", errval);
 			//}
 			read(fd, buffer, 1);
-			printf("\treceived ascii: %c\n", buffer[0]);
-			printf("\treceived hex: %x\n", buffer[0]);
+			//printf("\treceived ascii: %c\n", buffer[0]);
+			//printf("\treceived hex: %x\n", buffer[0]);
 			
 			if((COMMAND_MASK & buffer[0]) == CLAW_MASK)
 			{
-				rawServoData = buffer[0] & CLEAR_COMAND_MASK;
+				rawServoData = buffer[0] & CLEAR_COMMAND_MASK;
 				servoData = (int)map(rawServoData, 0, 32, 600, 2400);
 				write_servo6(servoData);
+				printf("CLAW: %d\n", servoData);
+			}
+			else if(COMMAND_MASK & buffer[0] == ROTATE_MASK)
+			{
+				rawServoData = buffer[0] & CLEAR_COMMAND_MASK;
+				servoData = (int)map(rawServoData, 0, 63, 600, 2400);
+				write_servo2(servoData);
+				printf("ROTATE: %d\n",servoData);
+			}
+			else if(COMMAND_MASK & buffer[0] == WRIST_MASK)
+			{
+				rawServoData = buffer[0] & CLEAR_COMMAND_MASK;
+				servoData = (int)map(rawServoData, 0, 63, 600, 2400);
+				write_servo5(servoData);
+				printf("WRIST: %d", servoData);
 			}
 		}
 		//else
@@ -143,9 +165,7 @@ int main(int argc, char **argv)
 		if(MOTOR4 >= 600 && MOTOR4 <= 2400){
 			write_servo4(MOTOR4);
 		}
-		printf("Motor 3 Value: %i\n", MOTOR3);
 		if(MOTOR3 >= 600 && MOTOR3 <= 2400){
-			printf("Writing to Motor 3!!\n");
 			write_servo3(MOTOR3);
 		}
    }

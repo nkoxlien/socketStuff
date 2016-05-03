@@ -21,12 +21,6 @@
 /*****************************************************************************
 *			Defines
 *****************************************************************************/
-#define NO_OP_MASK          0x00
-#define ROTATE_MASK         0x40
-#define WRIST_MASK          0x80
-#define CLAW_MASK           0xC0
-#define CLEAR_COMAND_MASK   0x3F
-#define COMMAND_MASK		0xC0
 #include "driver.h"
  
 long map(long x, long in_min, long in_max, long out_min, long out_max);

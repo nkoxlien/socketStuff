@@ -6,8 +6,8 @@
 #define MINX            -750
 #define MAXY            450
 #define MINY            -450
-#define MAXZ            2000
-#define MINZ            400
+#define MAXZ            1600
+#define MINZ            600
 
 
 void InitMotorValues(){
@@ -102,6 +102,6 @@ void SetMotor3Value(int z){
 
  	int value, resolution;
         resolution = RESOLUTION;
-        value = (z-1) * (1800 - 1000) / (RESOLUTION - 1) + 1000;
+        value = (z-1) * (1800 - 750) / (RESOLUTION - 1) + 750;
         MOTOR3 =  value;
 }
