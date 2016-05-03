@@ -134,6 +134,8 @@ int main(int argc, char **argv)
 			//printf("\treceived ascii: %c\n", buffer[0]);
 			//printf("\treceived hex: %x\n", buffer[0]);
 			
+			printf("RAW:%X,COM:%X,DATA:%d\n",buffer[0],buffer[0]&COMMAND_MASK, buffer[0]&CLEAR_COMMAND_MASK);
+
 			if((COMMAND_MASK & buffer[0]) == CLAW_MASK)
 			{
 				rawServoData = buffer[0] & CLEAR_COMMAND_MASK;

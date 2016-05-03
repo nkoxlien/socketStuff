@@ -3,7 +3,6 @@
 
 int readHandInfo(){
            
-	printf("Reading loop\n");
         peer_addr_len = sizeof(struct sockaddr_storage);
         nread = recvfrom(sfd, xyzBuf, BUF_SIZE, 0,
         	(struct sockaddr *) &peer_addr, &peer_addr_len);
