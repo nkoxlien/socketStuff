@@ -6,8 +6,8 @@
 #define MINX            -750
 #define MAXY            450
 #define MINY            -450
-#define MAXZ            1400
-#define MINZ            600
+#define MAXZ            2000
+#define MINZ            400
 
 
 void InitMotorValues(){
