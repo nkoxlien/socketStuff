@@ -102,6 +102,6 @@ void SetMotor3Value(int z){
 
  	int value, resolution;
         resolution = RESOLUTION;
-        value = (z-1) * (1800 -1200) / (RESOLUTION - 1) + 1200;
+        value = (z-1) * (1800 - 1000) / (RESOLUTION - 1) + 1000;
         MOTOR3 =  value;
 }
