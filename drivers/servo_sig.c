@@ -141,9 +141,10 @@ int main(int argc, char **argv)
 		//printf("%s\n",buffer);
 		//sleep(2);
 		
-		if(MOTOR4 >= 600 && MOTOR4 <= 2400)
+		if(MOTOR4 >= 600 && MOTOR4 <= 2400){
+			printf("Writing to servo 4\n");	
 			write_servo4(MOTOR4);
-
+		}
 		if(MOTOR3 >= 600 && MOTOR3 <= 2400)
 			write_servo3(MOTOR3);
 	
@@ -463,7 +464,4 @@ int write_servo6(int val)
   free(buf);
   return 0;
 }
-
-
-
 
