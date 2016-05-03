@@ -1,43 +1,39 @@
 
-       #include <sys/types.h>
-       #include <stdio.h>
-       #include <stdlib.h>
-       #include <unistd.h>
-       #include <string.h>
-       #include <sys/socket.h>
-       #include <netdb.h>
-       #include "driver.h"
-       #include "ArmTranslator.h"
-       #define BUF_SIZE 4
+#include "driver.h"
 
-       int
-       main(int argc, char *argv[])
-       {
-	   socketBind();
+int readHandInfo(){
            
-	   for (;;) {
-		printf("Reading loop\n");
-               peer_addr_len = sizeof(struct sockaddr_storage);
-               nread = recvfrom(sfd, xyzBuf, BUF_SIZE, 0,
-                       (struct sockaddr *) &peer_addr, &peer_addr_len);
-
+	printf("Reading loop\n");
+        peer_addr_len = sizeof(struct sockaddr_storage);
+        nread = recvfrom(sfd, xyzBuf, BUF_SIZE, 0,
+        	(struct sockaddr *) &peer_addr, &peer_addr_len);
+	int xLevel, yLevel, zLevel;
 	        
-               if (nread == -1){
-                 	printf("Failed read\n");  
-	       		continue;               /* Ignore failed request */
-		}
+        if (nread == -1){
+        	printf("Failed read\n");  
+		return 1;              /* Ignore failed request */
+	}
 		
-		if( xyzBuf[2]   == 0x00 )	
-			printf("x position: %hi\n ", (short)(xyzBuf[0] | (xyzBuf[1] << 8)));
-	     	else if( xyzBuf[2]  == 0x0001 )	
-			printf("y position: %hi\n ", (short)(xyzBuf[0] | (xyzBuf[1] << 8)));
-		
-		else if( xyzBuf[2]  == 0x0002 )	
-			printf("z position: %hi\n ", (short)(xyzBuf[0] | (xyzBuf[1] << 8)));
-		else
-			printf("Received garbage...\n");
-           }
-       }
+	if( xyzBuf[2]   == 0x00 ){	
+		xLevel = GetXLevel((short)(xyzBuf[0] | (xyzBuf[1] << 8)));
+		if(xLevel != 0)
+			SetMotor4Value(xLevel);
+	}
+
+	else if( xyzBuf[2]  == 0x0001 ){
+		yLevel = GetYLevel((short)(xyzBuf[0] | (xyzBuf[1] << 8)));
+	}
+
+	else if( xyzBuf[2]  == 0x0002 ){	
+		zLevel = GetZLevel((short)(xyzBuf[0] | (xyzBuf[1] << 8)));
+		if(zLevel != 0)
+			SetMotor3Value(zLevel);
+	}
+
+	else
+		printf("Received garbage...\n");
+	return 0;
+}
 
 int socketBind(){
 	

@@ -28,8 +28,12 @@ char xyzBuf[BUF_SIZE];
 * returns 0 on success
 **********************************************/
 int socketBind();
-	
 
+/*********************************************
+* Function reads the data from the kinect over
+* the LAN socket.  Returns 0 on success
+*********************************************/	
+int readHandInfo();
 
 
 

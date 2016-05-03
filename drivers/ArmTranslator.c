@@ -3,7 +3,15 @@
 #include <inttypes.h>
 #include "ArmTranslator.h"
 
-int GetXLevel(uint16_t x){
+
+void InitMotorValues(){
+	MOTOR3 = 0;
+	MOTOR4 = 0;
+	
+	return;
+}
+
+int GetXLevel(short x){
 
 	int resLength, level;
         
@@ -27,7 +35,7 @@ int GetXLevel(uint16_t x){
 }
 
 
-int GetYLevel(uint16_t y){
+int GetYLevel(short y){
 
         int resLength, level;
 
@@ -51,7 +59,7 @@ int GetYLevel(uint16_t y){
 }
 
 
-int GetZLevel(uint16_t z){
+int GetZLevel(short z){
 
         int resLength, level;
         
@@ -75,22 +83,16 @@ int GetZLevel(uint16_t z){
 }
 
 
-int GetMotor1Value(int x){
+void SetMotor4Value(int x){
 
  	int value, resolution;
         resolution = RESOLUTION;
         value = (x-1) * (2400 -600) / (RESOLUTION - 1) + 600;
-        return  value;
+        MOTOR4 =  value;
 }
 
-int GetMotor2Value(int y, int z){
-
-	return 0;
-
-}
-
-int GetMotor3Value(int y, int z){
+void SetMotor3Value(int z){
 
 
-	return 0;
+	return;
 }

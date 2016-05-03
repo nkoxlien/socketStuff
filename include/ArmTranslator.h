@@ -20,20 +20,16 @@
 #define MINZ            600
 
 
-int XCURR;
-int YCURR;
-int ZCURR;
-int MOTOR1;
-int MOTOR2;
+int MOTOR4;
 int MOTOR3;
 
+void InitMotorValues();
 
-int GetXLevel(uint16_t x);
-int GetYLevel(uint16_t y);
-int GetZLevel(uint16_t z);
-int GetMotor1Value(int x);
-int GetMotor2Value(int y, int z);
-int GetMotor3Value(int y, int z);
+int GetXLevel(short x);
+int GetYLevel(short y);
+int GetZLevel(short z);
+void SetMotor4Value(int x);
+void SetMotor3Value(int z);
 
 
 
