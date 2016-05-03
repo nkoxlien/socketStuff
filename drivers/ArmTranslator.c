@@ -1,7 +1,7 @@
 #include <inttypes.h>
 #include "ArmTranslator.h"
 
-#define RESOLUTION 	50
+#define RESOLUTION 	100
 #define MAXX            750
 #define MINX            -750
 #define MAXY            450
@@ -79,7 +79,7 @@ int GetZLevel(short z){
         for(int i = 1; i <= RESOLUTION; i++){
         
                 if( z > (MAXZ - (i * resLength))){
-                        level = i;
+                        level = RESOLUTION - i;
                         return level; 
                 }                       
         }
