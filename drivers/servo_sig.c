@@ -106,6 +106,9 @@ int main(int argc, char **argv)
    int xLevel, yLevel, zLevel;
    FD_ZERO(&rfds);
    FD_SET(fd, &rfds);
+	
+   int flags = fcntl(fd, F_GETFL, 0);
+   fcntl(fd, F_SETFL, flags | O_NONBLOCK);	//sets uart buffer to only be read when data (blocking)
    
    if((rv =socketBind()) != 0){
 	exit(EXIT_FAILURE);
@@ -113,67 +116,45 @@ int main(int argc, char **argv)
    
    InitMotorValues();
  
-   while(1){
+   while(busy){
 	   // Wait up to 10us 
-	   tv.tv_sec = 0;
-	   tv.tv_usec = 100;
+	   //tv.tv_sec = 0;
+	   //tv.tv_usec = 100;
 	  
-           readHandInfo();
 	   
-	   retval = select(fd + 1, &rfds, NULL, NULL, &tv);
 	   
-		if (retval == -1)
-			perror("select()");
-		else if (retval){
-			//printf("\nData is available now.\n");
-			//if (fseek(fp, -1 , SEEK_END) != 0) {
-			//	int errval = errno;
-			//	printf("ERROR: %d\n", errval);
-			//}
-			read(fd, buffer, 1);
-			//printf("\treceived ascii: %c\n", buffer[0]);
-			//printf("\treceived hex: %x\n", buffer[0]);
-			
-			printf("RAW:%X,COM:%X,DATA:%d\n",buffer[0],buffer[0]&COMMAND_MASK, buffer[0]&CLEAR_COMMAND_MASK);
-
-			if((COMMAND_MASK & buffer[0]) == CLAW_MASK)
-			{
-				rawServoData = buffer[0] & CLEAR_COMMAND_MASK;
-				servoData = (int)map(rawServoData, 0, 32, 600, 2400);
-				write_servo6(servoData);
-				printf("CLAW: %d\n", servoData);
-			}
-			else if(COMMAND_MASK & buffer[0] == ROTATE_MASK)
-			{
-				rawServoData = buffer[0] & CLEAR_COMMAND_MASK;
-				servoData = (int)map(rawServoData, 0, 63, 600, 2400);
-				write_servo2(servoData);
-				printf("ROTATE: %d\n",servoData);
-			}
-			else if(COMMAND_MASK & buffer[0] == WRIST_MASK)
-			{
-				rawServoData = buffer[0] & CLEAR_COMMAND_MASK;
-				servoData = (int)map(rawServoData, 0, 63, 600, 2400);
-				write_servo5(servoData);
-				printf("WRIST: %d", servoData);
-			}
+		read(fd, buffer, 1);
+		if((COMMAND_MASK & buffer[0]) == CLAW_MASK)
+		{
+			rawServoData = buffer[0] & CLEAR_COMMAND_MASK;
+			servoData = (int)map(rawServoData, 0, 32, 600, 2400);
+			write_servo6(servoData);
+			printf("CLAW: %d\n", servoData);
 		}
+		else if((COMMAND_MASK & buffer[0]) == ROTATE_MASK)
+		{
+			rawServoData = buffer[0] & CLEAR_COMMAND_MASK;
+			servoData = (int)map(rawServoData, 0, 63, 600, 2400);
+			write_servo2(servoData);
+			printf("ROTATE: %d\n",servoData);
+		}
+		else if((COMMAND_MASK & buffer[0]) == WRIST_MASK)
+		{
+			rawServoData = buffer[0] & CLEAR_COMMAND_MASK;
+			servoData = (int)map(rawServoData, 0, 63, 600, 2400);
+			write_servo5(servoData);
+			printf("WRIST: %d", servoData);
+		}
+		
+		moveArm();
+
 		//else
 			//printf("No data within 100us.\n");
 		
 		//read(fd, buffer, 64);
 		//printf("%s\n",buffer);
 		//sleep(2);
-		if(MOTOR4 >= 600 && MOTOR4 <= 2400){
-			write_servo4(MOTOR4);
-		}
-		if(MOTOR3 >= 600 && MOTOR3 <= 2400){
-			write_servo3(MOTOR3);
-		}
    }
-
-
-  
   
   //sleep(10);
   /* Loop forever, waiting for interrupts */
@@ -201,6 +182,25 @@ error:
    return 1;
    
 }
+
+
+
+
+void moveArm(){
+
+				
+	readHandInfo();
+
+	if(MOTOR4 >= 600 && MOTOR4 <= 2400){
+		write_servo4(MOTOR4);
+	}
+	
+	if(MOTOR3 >= 600 && MOTOR3 <= 2400){
+		write_servo3(MOTOR3);
+	}
+
+	return;
+ } 
 
 //*****************************************************************************
 //*****************************************************************************
