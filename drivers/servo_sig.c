@@ -127,33 +127,26 @@ int main(int argc, char **argv)
 		if((COMMAND_MASK & buffer[0]) == CLAW_MASK)
 		{
 			rawServoData = buffer[0] & CLEAR_COMMAND_MASK;
-			servoData = (int)map(rawServoData, 0, 32, 600, 2400);
+			servoData = (int)map(rawServoData, 0, 10, 600, 2400);
 			write_servo6(servoData);
 			printf("CLAW: %d\n", servoData);
 		}
 		else if((COMMAND_MASK & buffer[0]) == ROTATE_MASK)
 		{
 			rawServoData = buffer[0] & CLEAR_COMMAND_MASK;
-			servoData = (int)map(rawServoData, 0, 63, 600, 2400);
+			servoData = (int)map(rawServoData, 0, 10, 600, 2400);
 			write_servo2(servoData);
 			printf("ROTATE: %d\n",servoData);
 		}
 		else if((COMMAND_MASK & buffer[0]) == WRIST_MASK)
 		{
 			rawServoData = buffer[0] & CLEAR_COMMAND_MASK;
-			servoData = (int)map(rawServoData, 0, 63, 600, 2400);
+			servoData = (int)map(rawServoData, 0, 10, 600, 2400);
 			write_servo5(servoData);
 			printf("WRIST: %d", servoData);
 		}
 		
 		moveArm();
-
-		//else
-			//printf("No data within 100us.\n");
-		
-		//read(fd, buffer, 64);
-		//printf("%s\n",buffer);
-		//sleep(2);
    }
   
   //sleep(10);
@@ -478,12 +471,11 @@ int write_servo6(int val)
 		perror("open");
 		return -1;
 	}
-	if (write(fd, buf,10) < 0) {
-		perror("fwrite"); 
+	if(write(fd, buf, 10) < 0) {
+		perror("fwrite");
 		return -1;
 	}
-  close(fd);
-  free(buf);
-  return 0;
+ close(fd);
+ free(buf);
+ return 0;
 }
-
